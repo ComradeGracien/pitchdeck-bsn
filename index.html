@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSN Premium G&S Consulting - E.L.I.T.E.™</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0d3025 0%, #1a3d2e 50%, #0d3025 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            background-attachment: fixed;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(196, 168, 118, 0.03) 0%, rgba(13, 48, 37, 0.1) 70%);
+            pointer-events: none;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .slide h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #c8a876;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .slide h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #c8a876;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #ffffff;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            font-weight: 300;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .slide li {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            list-style: none;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .slide li::before {
+            content: '→';
+            color: #c8a876;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+
+        .logo {
+            width: 180px;
+            height: auto;
+            margin: 0 auto 2rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .slogan {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #c8a876;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: rgba(196, 168, 118, 0.9);
+            color: #0d3025;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: #c8a876;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(196, 168, 118, 0.4);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(196, 168, 118, 0.9);
+            color: #0d3025;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(26, 61, 46, 0.8) 0%, rgba(13, 48, 37, 0.9) 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(196, 168, 118, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            border-color: #c8a876;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(196, 168, 118, 0.2);
+        }
+
+        .icon {
+            font-size: 3rem;
+            color: #c8a876;
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #c8a876 0%, #b8975f 100%);
+            color: #0d3025;
+            text-decoration: none;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(196, 168, 118, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(196, 168, 118, 0.5);
+            background: linear-gradient(135deg, #b8975f 0%, #c8a876 100%);
+        }
+
+        .elite-methodology {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .elite-step {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(26, 61, 46, 0.6) 0%, rgba(13, 48, 37, 0.8) 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(196, 168, 118, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .elite-step:hover {
+            border-color: #c8a876;
+            transform: translateY(-5px);
+        }
+
+        .elite-letter {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #c8a876;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculator {
+            background: linear-gradient(135deg, rgba(26, 61, 46, 0.9) 0%, rgba(13, 48, 37, 0.95) 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 2px solid rgba(196, 168, 118, 0.3);
+            margin-top: 2rem;
+            backdrop-filter: blur(15px);
+        }
+
+        .calculator-input {
+            margin-bottom: 1.5rem;
+        }
+
+        .calculator-input label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #c8a876;
+        }
+
+        .calculator-input input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculator-input input[type="number"] {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(196, 168, 118, 0.5);
+            border-radius: 5px;
+            padding: 8px 12px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            width: 120px;
+        }
+
+        .calculator-results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(196, 168, 118, 0.1) 0%, rgba(196, 168, 118, 0.05) 100%);
+            border-radius: 15px;
+            border: 1px solid rgba(196, 168, 118, 0.3);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(196, 168, 118, 0.2);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #c8a876;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 20px;
+            }
+
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+
+            .slide h2 {
+                font-size: 2rem;
+            }
+
+            .grid-2, .grid-3, .grid-2x2 {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .elite-methodology {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                bottom: 20px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Dégradés spécifiques pour chaque slide */
+        .slide-1 {
+            background: radial-gradient(ellipse at center, #1a3d2e 0%, #0d3025 100%);
+        }
+
+        .slide-2 {
+            background: linear-gradient(135deg, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-3 {
+            background: radial-gradient(ellipse at center, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-4 {
+            background: linear-gradient(45deg, #0d3025 0%, #1a3d2e 50%, #0d3025 100%);
+        }
+
+        .slide-5 {
+            background: radial-gradient(ellipse at top right, #1a3d2e 0%, #0d3025 100%);
+        }
+
+        .slide-6 {
+            background: linear-gradient(135deg, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-7 {
+            background: radial-gradient(ellipse at center, #1a3d2e 0%, #0d3025 100%);
+        }
+
+        .slide-8 {
+            background: linear-gradient(180deg, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-9 {
+            background: linear-gradient(135deg, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-10 {
+            background: radial-gradient(ellipse at bottom right, #1a3d2e 0%, #0d3025 100%);
+        }
+
+        .slide-11 {
+            background: linear-gradient(180deg, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-12 {
+            background: radial-gradient(ellipse at center, #0d3025 0%, #1a3d2e 100%);
+        }
+
+        .slide-13 {
+            background: radial-gradient(ellipse at center, #1a3d2e 0%, #0d3025 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">13</span>
+    </div>
+    <!-- Slide 1: Couverture -->
+    <div class="slide slide-1 active" id="slide-1">
+        <div class="slide-content">
+            <!-- Logo BSN SVG intégré -->
+            <div style="margin-bottom: 2rem;">
+                <svg class="logo" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Arbre -->
+                    <g transform="translate(150, 100)">
+                        <!-- Tronc -->
+                        <rect x="-5" y="30" width="10" height="40" fill="#c8a876"/>
+                        <!-- Feuillage -->
+                        <circle cx="-25" cy="0" r="25" fill="#c8a876"/>
+                        <circle cx="25" cy="0" r="25" fill="#c8a876"/>
+                        <circle cx="0" cy="-15" r="30" fill="#c8a876"/>
+                        <circle cx="0" cy="15" r="20" fill="#c8a876"/>
+                        <!-- Étoiles dans le feuillage -->
+                        <g fill="white" opacity="0.8">
+                            <circle cx="-10" cy="-5" r="1.5"/>
+                            <circle cx="15" cy="-10" r="1"/>
+                            <circle cx="5" cy="5" r="1.5"/>
+                            <circle cx="-20" cy="8" r="1"/>
+                            <circle cx="10" cy="-20" r="1"/>
+                        </g>
+                        <!-- Oiseaux -->
+                        <g fill="#c8a876" opacity="0.7">
+                            <path d="M-60,-40 Q-65,-35 -60,-30 Q-55,-35 -60,-40"/>
+                            <path d="M-45,-50 Q-50,-45 -45,-40 Q-40,-45 -45,-50"/>
+                            <path d="M70,-35 Q75,-30 70,-25 Q65,-30 70,-35"/>
+                            <path d="M55,-60 Q60,-55 55,-50 Q50,-55 55,-60"/>
+                            <path d="M85,-55 Q90,-50 85,-45 Q80,-50 85,-55"/>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 600; margin-bottom: 1rem;">BSN Premium G&S Consulting</h3>
+            <div class="slogan">Structurer - Scaler - Gagner</div>
+
+            <h1>E.L.I.T.E.™</h1>
+            <h2 style="margin-bottom: 2rem;">Le Standard d'Excellence</h2>
+            <p style="font-size: 1.5rem; margin-bottom: 0;">Le cabinet qui transforme les entreprises en organisations d'excellence</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Le Problème -->
+    <div class="slide slide-2" id="slide-2">
+        <div class="slide-content">
+            <h1>Le Problème</h1>
+            <h3>Les PME ne manquent ni de clients, ni d'idées.<br>
+            Elles manquent de structure, de systèmes, et d'équipes calibrées pour scaler.</h3>
+
+            <p style="font-size: 1.4rem; margin: 2rem 0; color: #c8a876; font-weight: 600;">Elles souffrent toutes du même schéma :</p>
+
+            <ul style="max-width: 900px; margin: 0 auto;">
+                <li><strong style="color: #c8a876;">Vision floue</strong> → priorités dispersées</li>
+                <li><strong style="color: #c8a876;">Opérations artisanales</strong> → dépendance au dirigeant</li>
+                <li><strong style="color: #c8a876;">Croissance instable</strong> → manque de machine commerciale</li>
+                <li><strong style="color: #c8a876;">Zéro automatisation</strong> → perte de marge + charge mentale</li>
+                <li><strong style="color: #c8a876;">Outils éparpillés</strong> → inefficacité structurelle</li>
+                <li><strong style="color: #c8a876;">Aucune structuration de l'équipe</strong> → stagnation interne</li>
+                <li><strong style="color: #c8a876;">Pas de pilotage clair</strong> → décisions à l'instinct</li>
+            </ul>
+
+            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, rgba(196, 168, 118, 0.1) 0%, rgba(196, 168, 118, 0.05) 100%); border-radius: 15px; border: 2px solid rgba(196, 168, 118, 0.3);">
+                <h3 style="color: #c8a876; margin-bottom: 1rem;">Résultat :</h3>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Le dirigeant devient le goulot.<br>
+                    L'équipe manque de direction.<br>
+                    <strong style="color: #c8a876;">La croissance plafonne alors que le potentiel est immense.</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: La Vérité -->
+    <div class="slide slide-3" id="slide-3">
+        <div class="slide-content">
+            <h1 style="margin-bottom: 3rem;">La Vérité</h1>
+
+            <div style="font-size: 1.8rem; line-height: 1.6; margin-bottom: 3rem;">
+                <p style="margin-bottom: 1.5rem;">Ce n'est pas votre marché.</p>
+                <p style="margin-bottom: 1.5rem;">Ce n'est pas votre équipe.</p>
+                <p style="margin-bottom: 3rem;">Ce n'est pas votre produit.</p>
+            </div>
+
+            <div style="font-size: 2.2rem; font-weight: 700; color: #c8a876; margin-bottom: 2rem; font-family: 'Playfair Display', serif;">
+                👉 C'est votre système interne qui vous empêche de scaler.
+            </div>
+
+            <div style="font-size: 1.6rem; font-weight: 600; color: #ffffff;">
+                👉 Et tant que rien n'est structuré, rien ne peut s'accélérer.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Notre Mission -->
+    <div class="slide slide-4" id="slide-4">
+        <div class="slide-content">
+            <h1>Notre Mission</h1>
+            <h2 style="margin-bottom: 3rem;">Élever les entreprises vers l'excellence et la croissance durable</h2>
+
+            <div style="margin-bottom: 3rem;">
+                <p style="font-size: 1.4rem; margin-bottom: 1.5rem; color: #c8a876; font-weight: 600;">
+                    BSN intervient comme une agence de transformation premium :
+                </p>
+                <p style="font-size: 1.3rem; margin-bottom: 3rem;">
+                    Stratégie • Opérations • Automatisation • IA • Leadership • Acquisition • Pilotage
+                </p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(196, 168, 118, 0.1) 0%, rgba(196, 168, 118, 0.05) 100%); padding: 3rem; border-radius: 20px; border: 2px solid rgba(196, 168, 118, 0.3);">
+                <h3 style="font-size: 1.8rem; margin-bottom: 2rem; color: #c8a876;">Nous ne donnons pas des conseils.</h3>
+                <p style="font-size: 1.4rem; font-weight: 600;">
+                    Nous créons des entreprises performantes, autonomes et scalables.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Pourquoi BSN ? -->
+    <div class="slide slide-5" id="slide-5">
+        <div class="slide-content">
+            <h1>Pourquoi BSN ?</h1>
+            <h3 style="margin-bottom: 3rem;">Parce que nous sommes les seuls à combiner en un seul endroit :</h3>
+
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fas fa-chess-king icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">Stratégie de haut niveau</h4>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cogs icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">Structuration opérationnelle</h4>
+                </div>
+                <div class="card">
+                    <i class="fas fa-robot icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">Automatisation & IA</h4>
+                </div>
+                <div class="card">
+                    <i class="fas fa-network-wired icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">CRM/ERP & intégrations</h4>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">Leadership & montée en compétence</h4>
+                </div>
+                <div class="card">
+                    <i class="fas fa-bullseye icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">Acquisition ciblée</h4>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-line icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.2rem;">Pilotage data & décisions intelligentes</h4>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, rgba(196, 168, 118, 0.15) 0%, rgba(196, 168, 118, 0.08) 100%); border-radius: 15px; border: 2px solid rgba(196, 168, 118, 0.4);">
+                <h3 style="color: #c8a876; margin-bottom: 1rem;">👉 Un modèle hybride :</h3>
+                <p style="font-size: 1.4rem; font-weight: 600;">cabinet + agence exécutive + coaching stratégique</p>
+                <p style="font-size: 1.2rem; margin-top: 1rem; font-style: italic;">
+                    C'est ce qui crée des transformations rapides et durables.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Slide 6: Notre Promesse -->
+    <div class="slide slide-6" id="slide-6">
+        <div class="slide-content">
+            <h1>Notre Promesse</h1>
+            <h2 style="font-size: 3rem; color: #c8a876; margin-bottom: 2rem;">+30% de croissance</h2>
+            <h3 style="margin-bottom: 3rem;">en élevant votre structure, votre système et votre équipe</h3>
+
+            <p style="font-size: 1.4rem; margin-bottom: 3rem;">
+                Pas en travaillant plus.<br>
+                <strong style="color: #c8a876;">En travaillant mieux, plus intelligemment, avec un cadre d'excellence.</strong>
+            </p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fas fa-users-cog icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">Équipes qui montent en puissance</h4>
+                    <p style="font-size: 1rem;">Formation, coaching et autonomie progressive</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-sync-alt icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">Process qui tournent seuls</h4>
+                    <p style="font-size: 1rem;">Automatisations et workflows optimisés</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-tachometer-alt icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">Pilotage clair et temps réel</h4>
+                    <p style="font-size: 1rem;">Cockpit décisionnel et KPIs actionnables</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Nos Domaines d'Intervention -->
+    <div class="slide slide-7" id="slide-7">
+        <div class="slide-content">
+            <h1>Nos domaines d'intervention</h1>
+
+            <div class="grid-2x2" style="grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 3rem;">
+                <div class="card">
+                    <i class="fas fa-chess-king icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">1. Stratégie & clarté exécutive</h4>
+                    <p style="font-size: 1rem; line-height: 1.6;">Vision, priorités, positionnement, OKR</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cogs icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">2. Excellence opérationnelle</h4>
+                    <p style="font-size: 1rem; line-height: 1.6;">Process, SOP, organisation, rituels, efficacité interne</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-robot icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">3. Systèmes & automatisation</h4>
+                    <p style="font-size: 1rem; line-height: 1.6;">CRM, ERP, IA, automatisations no-code, intégrations</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-bullseye icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">4. Acquisition & croissance ciblée</h4>
+                    <p style="font-size: 1rem; line-height: 1.6;">Outbound, inbound, nurturing, machine commerciale</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">5. Leadership & montée en compétence</h4>
+                    <p style="font-size: 1rem; line-height: 1.6;">Formation des équipes, coaching, autonomie</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-line icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">6. Pilotage & data</h4>
+                    <p style="font-size: 1rem; line-height: 1.6;">Cockpits, KPIs, marges, prévision</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Méthodologie E.L.I.T.E. -->
+    <div class="slide slide-8" id="slide-8">
+        <div class="slide-content">
+            <h1>La Méthodologie BSN : E.L.I.T.E.™</h1>
+            <h3 style="margin-bottom: 1rem;">Le standard d'excellence qui transforme les PME en organisations scalables</h3>
+            <p style="margin-bottom: 3rem; font-style: italic; color: #c8a876;">
+                E.L.I.T.E.™ : Aligner — Structurer — Systémiser — Accélérer — Piloter
+            </p>
+
+            <div class="elite-methodology">
+                <div class="elite-step">
+                    <div class="elite-letter">E</div>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">EXECUTIVE ALIGNMENT</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5;">Vision • Priorités • Positionnement • Direction • Leadership<br>
+                    <em style="color: #c8a876;">→ On clarifie le cap. On aligne le dirigeant. On retire le bruit.</em></p>
+                </div>
+                <div class="elite-step">
+                    <div class="elite-letter">L</div>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">LEAN OPERATIONS</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5;">Process • SOP • Organisation • Rôles • Rituels • Culture d'efficacité<br>
+                    <em style="color: #c8a876;">→ Une entreprise qui fonctionne sans friction et sans dépendance au fondateur.</em></p>
+                </div>
+                <div class="elite-step">
+                    <div class="elite-letter">I</div>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">INTELLIGENT SYSTEMS</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5;">CRM • ERP • Automatisation • IA • Intégrations • Structuration technologique<br>
+                    <em style="color: #c8a876;">→ On installe des fondations solides, intelligentes et scalables.</em></p>
+                </div>
+                <div class="elite-step">
+                    <div class="elite-letter">T</div>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">TARGETED GROWTH</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5;">Acquisition • Machine semi-automatisée • Outbound • Inbound • Pipeline • Scoring<br>
+                    <em style="color: #c8a876;">→ Votre croissance devient prévisible et duplicable.</em></p>
+                </div>
+                <div class="elite-step">
+                    <div class="elite-letter">E</div>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem;">EXCELLENCE EXECUTION</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5;">Pilotage • KPIs • Cockpit • OKR • Boucles de décision • Optimisation continue<br>
+                    <em style="color: #c8a876;">→ L'entreprise gagne en maîtrise, en focus et en performance.</em></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Slide 9: Calculateur ROI Interactif -->
+    <div class="slide slide-9" id="slide-9">
+        <div class="slide-content">
+            <h1>Calculateur d'Impact & ROI</h1>
+            <h3 style="margin-bottom: 2rem;">Estimez en temps réel l'impact de BSN sur votre entreprise</h3>
+
+            <div class="calculator">
+                <div class="grid-2">
+                    <div>
+                        <h4 style="color: #c8a876; margin-bottom: 2rem; font-size: 1.4rem;">📊 Vos données actuelles</h4>
+
+                        <div class="calculator-input">
+                            <label for="ca-actuel">Chiffre d'affaires annuel actuel</label>
+                            <input type="range" id="ca-actuel" min="100000" max="10000000" step="50000" value="500000" oninput="updateCalculator()">
+                            <input type="number" id="ca-actuel-num" value="500000" min="100000" max="10000000" oninput="syncSlider('ca-actuel', this.value); updateCalculator()"> €
+                        </div>
+
+                        <div class="calculator-input">
+                            <label for="nb-employes">Nombre d'employés</label>
+                            <input type="range" id="nb-employes" min="1" max="50" step="1" value="8" oninput="updateCalculator()">
+                            <input type="number" id="nb-employes-num" value="8" min="1" max="50" oninput="syncSlider('nb-employes', this.value); updateCalculator()"> personnes
+                        </div>
+
+                        <div class="calculator-input">
+                            <label for="taches-repetitives">% temps tâches répétitives par employé</label>
+                            <input type="range" id="taches-repetitives" min="10" max="80" step="5" value="40" oninput="updateCalculator()">
+                            <input type="number" id="taches-repetitives-num" value="40" min="10" max="80" oninput="syncSlider('taches-repetitives', this.value); updateCalculator()"> %
+                        </div>
+
+                        <div class="calculator-input">
+                            <label for="taux-conversion">Taux de conversion actuel</label>
+                            <input type="range" id="taux-conversion" min="1" max="30" step="0.5" value="8" oninput="updateCalculator()">
+                            <input type="number" id="taux-conversion-num" value="8" min="1" max="30" step="0.5" oninput="syncSlider('taux-conversion', this.value); updateCalculator()"> %
+                        </div>
+
+                        <div class="calculator-input">
+                            <label for="cout-horaire">Coût horaire moyen</label>
+                            <input type="range" id="cout-horaire" min="20" max="150" step="5" value="45" oninput="updateCalculator()">
+                            <input type="number" id="cout-horaire-num" value="45" min="20" max="150" step="1" oninput="syncSlider('cout-horaire', this.value); updateCalculator()"> €/h
+                        </div>
+
+                        <div class="calculator-input">
+                            <label for="panier-moyen">Panier moyen</label>
+                            <input type="range" id="panier-moyen" min="100" max="10000" step="100" value="2000" oninput="updateCalculator()">
+                            <input type="number" id="panier-moyen-num" value="2000" min="100" max="10000" step="50" oninput="syncSlider('panier-moyen', this.value); updateCalculator()"> €
+                        </div>
+
+                        <div class="calculator-input">
+                            <label for="leads-mensuels">Leads mensuels</label>
+                            <input type="range" id="leads-mensuels" min="5" max="200" step="5" value="50" oninput="updateCalculator()">
+                            <input type="number" id="leads-mensuels-num" value="50" min="5" max="200" step="1" oninput="syncSlider('leads-mensuels', this.value); updateCalculator()"> leads/mois
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="color: #c8a876; margin-bottom: 2rem; font-size: 1.4rem;">🚀 Impact BSN projeté</h4>
+
+                        <div class="calculator-results">
+                            <div class="result-item">
+                                <span><strong>⏱️ Temps libéré par mois</strong></span>
+                                <span class="result-value" id="temps-libre">0h</span>
+                            </div>
+                            <div class="result-item">
+                                <span><strong>💰 Économies annuelles</strong></span>
+                                <span class="result-value" id="economies">0 €</span>
+                            </div>
+                            <div class="result-item">
+                                <span><strong>📈 CA additionnel annuel</strong></span>
+                                <span class="result-value" id="ca-additionnel">0 €</span>
+                            </div>
+                            <div class="result-item">
+                                <span><strong>🎯 ROI sur 12 mois</strong></span>
+                                <span class="result-value" id="roi">0%</span>
+                            </div>
+                            <div class="result-item">
+                                <span><strong>⚡ Retour sur investissement</strong></span>
+                                <span class="result-value" id="payback">0 mois</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(196, 168, 118, 0.2) 0%, rgba(196, 168, 118, 0.1) 100%); border-radius: 10px; border: 1px solid rgba(196, 168, 118, 0.4);">
+                            <p style="font-size: 0.9rem; color: #c8a876; margin-bottom: 0.5rem;"><strong>Hypothèses BSN :</strong></p>
+                            <p style="font-size: 0.85rem; line-height: 1.4; margin: 0;">
+                                • Réduction des tâches répétitives : 40%<br>
+                                • Amélioration du taux de conversion : +20%<br>
+                                • Investissement moyen : 25 000 €
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Slide 10: Résultats & Cas Clients -->
+    <div class="slide slide-10" id="slide-10">
+        <div class="slide-content">
+            <h1>Résultats & Cas clients</h1>
+
+            <div class="grid-2x2">
+                <div class="card">
+                    <i class="fas fa-hammer icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">Atelier haut de gamme – Menuiserie / Design</h4>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: #c8a876; margin-bottom: 0.5rem;">+42% de CA</p>
+                    <p style="font-size: 1rem; line-height: 1.6;">Systèmes + CRM + process • Délégation accélérée</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chalkboard-teacher icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">Coach & formatrice premium</h4>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: #c8a876; margin-bottom: 0.5rem;">+45 000€ en 3 semaines</p>
+                    <p style="font-size: 1rem; line-height: 1.6;">Structuration + réactivation automatisée</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-home icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">Rénovation / Agencement</h4>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: #c8a876; margin-bottom: 0.5rem;">+8h libérées par jour</p>
+                    <p style="font-size: 1rem; line-height: 1.6;">Devis industrialisés • Opérations fluidifiées</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-network-wired icon"></i>
+                    <h4 style="color: #c8a876; margin-bottom: 1rem; font-size: 1.3rem;">Réseau multi-sites</h4>
+                    <p style="font-size: 1.1rem; font-weight: 600; color: #c8a876; margin-bottom: 0.5rem;">Volume x4 • Satisfaction +38%</p>
+                    <p style="font-size: 1rem; line-height: 1.6;">CRM + marketing automatisé</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Nos Offres -->
+    <div class="slide slide-11" id="slide-11">
+        <div class="slide-content">
+            <h1>Notre Offre</h1>
+            <h3 style="margin-bottom: 3rem;">Positionnement : Cabinet premium + agence d'exécution</h3>
+
+            <div class="grid-2">
+                <div class="card" style="background: linear-gradient(135deg, rgba(196, 168, 118, 0.15) 0%, rgba(26, 61, 46, 0.8) 100%); border: 3px solid rgba(196, 168, 118, 0.5);">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-rocket icon" style="font-size: 2.5rem;"></i>
+                        <h3 style="color: #c8a876; margin: 1rem 0; font-size: 1.8rem;">Programme 3 mois</h3>
+                        <h4 style="color: #ffffff; font-size: 1.4rem; font-weight: 600;">"ELITE Starter"</h4>
+                    </div>
+                    <ul style="text-align: left; margin-bottom: 2rem;">
+                        <li>Executive Alignment</li>
+                        <li>Lean Operations (process fondamentaux)</li>
+                        <li>Intelligent Systems (CRM/automatisation de base)</li>
+                        <li>Targeted Growth (acquisition simple)</li>
+                        <li>Excellence Execution (pilotage essentiel)</li>
+                    </ul>
+                    <div style="background: rgba(196, 168, 118, 0.2); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(196, 168, 118, 0.4);">
+                        <p style="font-weight: 600; color: #c8a876; margin: 0;">→ Vous passez d'un business artisanal à une structure claire</p>
+                    </div>
+                </div>
+
+                <div class="card" style="background: linear-gradient(135deg, rgba(196, 168, 118, 0.2) 0%, rgba(26, 61, 46, 0.9) 100%); border: 3px solid #c8a876;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-crown icon" style="font-size: 2.5rem;"></i>
+                        <h3 style="color: #c8a876; margin: 1rem 0; font-size: 1.8rem;">Programme 6 mois</h3>
+                        <h4 style="color: #ffffff; font-size: 1.4rem; font-weight: 600;">"ELITE Scale"</h4>
+                    </div>
+                    <ul style="text-align: left; margin-bottom: 2rem; font-size: 0.95rem;">
+                        <li>Tous les piliers E.L.I.T.E.™ en profondeur</li>
+                        <li>Automatisations avancées (IA + no-code)</li>
+                        <li>Machine d'acquisition complète</li>
+                        <li>Structuration de l'équipe & montée en compétence</li>
+                        <li>Process + SOP + cockpit complet</li>
+                        <li>Rituels + leadership + culture d'efficacité</li>
+                        <li>Exécution + optimisation continue</li>
+                    </ul>
+                    <div style="background: rgba(196, 168, 118, 0.25); padding: 1.5rem; border-radius: 10px; border: 1px solid #c8a876;">
+                        <p style="font-weight: 600; color: #c8a876; margin: 0;">→ Votre entreprise devient une organisation performante, prédictible et scalable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Notre Garantie -->
+    <div class="slide slide-12" id="slide-12">
+        <div class="slide-content">
+            <h1 style="margin-bottom: 4rem;">Notre Garantie</h1>
+
+            <div style="font-size: 2.5rem; font-weight: 700; color: #c8a876; margin-bottom: 3rem; font-family: 'Playfair Display', serif; line-height: 1.4;">
+                « Nous garantissons des transformations visibles, mesurables et concrètes. »
+            </div>
+
+            <div style="font-size: 1.8rem; font-weight: 600; color: #ffffff; line-height: 1.6;">
+                Sans résultat, nous continuons jusqu'à obtention d'un ROI réel.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Call to Action -->
+    <div class="slide slide-13" id="slide-13">
+        <div class="slide-content">
+            <h1>Call To Action</h1>
+            <h3 style="margin-bottom: 4rem;">Prêt à transformer votre entreprise ?</h3>
+
+            <div class="grid-2" style="gap: 4rem;">
+                <div class="card" style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-calendar-alt icon"></i>
+                    <h3 style="color: #c8a876; margin-bottom: 1rem;">Session Stratégique Premium</h3>
+                    <p style="font-size: 2rem; font-weight: 700; color: #c8a876; margin: 1rem 0;">400 €</p>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem;">Clarté. Priorités. Plan. Direction. Déclic.</p>
+                    <a href="https://taap.it/session-offerte-bsn" target="_blank" class="cta-button" style="font-size: 1.2rem; padding: 18px 35px;">
+                        <i class="fas fa-rocket" style="margin-right: 8px;"></i>
+                        Réserver ma session
+                    </a>
+                </div>
+
+                <div class="card" style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-chart-line icon"></i>
+                    <h3 style="color: #c8a876; margin-bottom: 1rem;">Diagnostic Express 10 min</h3>
+                    <p style="font-size: 2rem; font-weight: 700; color: #c8a876; margin: 1rem 0;">GRATUIT</p>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem;">"Est-ce que votre entreprise peut vraiment scaler ?"</p>
+                    <a href="https://taap.it/diagnostic-to-scale-bsn" target="_blank" class="cta-button" style="font-size: 1.2rem; padding: 18px 35px;">
+                        <i class="fas fa-search" style="margin-right: 8px;"></i>
+                        Faire le diagnostic
+                    </a>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; text-align: center;">
+                <!-- Logo BSN SVG -->
+                <svg width="120" height="80" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1rem;">
+                    <g transform="translate(150, 100)">
+                        <rect x="-5" y="30" width="10" height="40" fill="#c8a876"/>
+                        <circle cx="-25" cy="0" r="25" fill="#c8a876"/>
+                        <circle cx="25" cy="0" r="25" fill="#c8a876"/>
+                        <circle cx="0" cy="-15" r="30" fill="#c8a876"/>
+                        <circle cx="0" cy="15" r="20" fill="#c8a876"/>
+                        <g fill="white" opacity="0.8">
+                            <circle cx="-10" cy="-5" r="1.5"/>
+                            <circle cx="15" cy="-10" r="1"/>
+                            <circle cx="5" cy="5" r="1.5"/>
+                            <circle cx="-20" cy="8" r="1"/>
+                            <circle cx="10" cy="-20" r="1"/>
+                        </g>
+                        <g fill="#c8a876" opacity="0.7">
+                            <path d="M-60,-40 Q-65,-35 -60,-30 Q-55,-35 -60,-40"/>
+                            <path d="M-45,-50 Q-50,-45 -45,-40 Q-40,-45 -45,-50"/>
+                            <path d="M70,-35 Q75,-30 70,-25 Q65,-30 70,-35"/>
+                        </g>
+                    </g>
+                </svg>
+                <p style="color: #c8a876; font-size: 1.1rem; font-weight: 600;">BSN Premium G&S Consulting</p>
+                <p style="color: #ffffff; font-size: 0.9rem; margin-top: 0.5rem;">Structurer - Scaler - Gagner</p>
+            </div>
+        </div>
+    </div>
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">
+            <i class="fas fa-chevron-left"></i> Précédent
+        </button>
+        <button class="nav-btn" onclick="nextSlide()">
+            Suivant <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 13;
+
+        // Navigation entre les slides
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+
+            document.getElementById('current-slide').textContent = currentSlide;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Navigation clavier
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key >= '1' && e.key <= '9') {
+                currentSlide = parseInt(e.key);
+                showSlide(currentSlide);
+            }
+        });
+
+        // Fonctions du calculateur ROI
+        function syncSlider(sliderId, value) {
+            document.getElementById(sliderId).value = value;
+            document.getElementById(sliderId + '-num').value = value;
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('fr-FR').format(Math.round(num));
+        }
+
+        function updateCalculator() {
+            // Récupérer les valeurs
+            const caActuel = parseFloat(document.getElementById('ca-actuel').value);
+            const nbEmployes = parseInt(document.getElementById('nb-employes').value);
+            const tachesRepetitives = parseFloat(document.getElementById('taches-repetitives').value);
+            const tauxConversion = parseFloat(document.getElementById('taux-conversion').value);
+            const coutHoraire = parseFloat(document.getElementById('cout-horaire').value);
+            const panierMoyen = parseFloat(document.getElementById('panier-moyen').value);
+            const leadsMensuels = parseInt(document.getElementById('leads-mensuels').value);
+
+            // Hypothèses BSN
+            const reductionTachesRepetitives = 0.40; // 40% de réduction
+            const ameliorationTauxConversion = 0.20; // +20% d'amélioration
+            const investissementBSN = 25000; // 25 000€ d'investissement moyen
+
+            // Calculs
+            const heuresRepetitivesParEmployeParMois = (35 * 4.33 * tachesRepetitives / 100); // 35h/semaine * 4.33 semaines/mois * %
+            const tempsLibreParMois = nbEmployes * heuresRepetitivesParEmployeParMois * reductionTachesRepetitives;
+
+            const economiesAnnuelles = tempsLibreParMois * 12 * coutHoraire;
+
+            const nouveauTauxConversion = tauxConversion * (1 + ameliorationTauxConversion);
+            const ventesSupplementairesParMois = leadsMensuels * (nouveauTauxConversion - tauxConversion) / 100;
+            const caAdditionnelAnnuel = ventesSupplementairesParMois * 12 * panierMoyen;
+
+            const gainBrutAnnuel = economiesAnnuelles + caAdditionnelAnnuel;
+            const roi = ((gainBrutAnnuel - investissementBSN) / investissementBSN) * 100;
+            const paybackMois = investissementBSN / (gainBrutAnnuel / 12);
+
+            // Mettre à jour l'affichage
+            document.getElementById('temps-libre').textContent = formatNumber(tempsLibreParMois) + 'h';
+            document.getElementById('economies').textContent = formatNumber(economiesAnnuelles) + ' €';
+            document.getElementById('ca-additionnel').textContent = formatNumber(caAdditionnelAnnuel) + ' €';
+            document.getElementById('roi').textContent = formatNumber(roi) + '%';
+            document.getElementById('payback').textContent = Math.round(paybackMois) + ' mois';
+
+            // Synchroniser les sliders avec les inputs numériques
+            const inputs = ['ca-actuel', 'nb-employes', 'taches-repetitives', 'taux-conversion', 'cout-horaire', 'panier-moyen', 'leads-mensuels'];
+            inputs.forEach(id => {
+                const slider = document.getElementById(id);
+                const numberInput = document.getElementById(id + '-num');
+                if (numberInput.value != slider.value) {
+                    numberInput.value = slider.value;
+                }
+            });
+        }
+
+        // Initialiser le calculateur au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCalculator();
+            showSlide(1);
+        });
+
+        // Gestion du redimensionnement de la fenêtre
+        window.addEventListener('resize', function() {
+            // Ajuster la hauteur des slides si nécessaire
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => {
+                slide.style.minHeight = window.innerHeight + 'px';
+            });
+        });
+
+        // Animation au scroll (pour les futurs développements)
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                if (isVisible) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Précharger les images (si nécessaire)
+        function preloadImages() {
+            // Fonction pour précharger des images si on en ajoute plus tard
+        }
+
+        // Initialisation complète
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('BSN Premium Pitch Deck - E.L.I.T.E.™ loaded successfully');
+            updateCalculator();
+            showSlide(1);
+            preloadImages();
+
+            // Message de bienvenue dans la console
+            console.log('%c🚀 BSN Premium G&S Consulting', 'color: #c8a876; font-size: 20px; font-weight: bold;');
+            console.log('%cStructurer - Scaler - Gagner', 'color: #c8a876; font-size: 14px;');
+            console.log('%cPitch Deck E.L.I.T.E.™ - Version HTML Interactive', 'color: #1a3d2e; font-size: 12px;');
+        });
+    </script>
+</body>
+</html>
